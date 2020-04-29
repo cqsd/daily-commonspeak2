@@ -1,0 +1,54 @@
+name: generate and commit wordlists
+on:
+  schedule:
+    - cron:  "30 20 * * *"  # every day at UTC 20:30p (PST 13:30p)
+
+jobs:
+  wordlists:
+    name: generate new wordlists
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+
+      - name: put service account creds in a file
+        run: echo '${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}' > ./credentials.json
+
+      - name: make wordlists dir
+        run: mkdir -p wordlists
+
+      - name: generate wordlists/subdomains.txt
+        run: |
+          ./commonspeak2 \
+            --credentials credentials.json \
+            --project ${{ secrets.GCP_PROJECT_ID }} \
+            --verbose \
+            subdomains \
+            --output wordlists/subdomains.txt \
+            --limit 15000
+
+      - name: sanity check
+        run: head -n25 wordlists/subdomains.txt
+
+      # ref [1]
+      - name: setup ssh
+        env:
+            SSH_AUTH_SOCK: /tmp/ssh_agent.sock
+        run: |
+            mkdir -p ~/.ssh
+            ssh-keyscan github.com >> ~/.ssh/known_hosts
+            ssh-agent -a $SSH_AUTH_SOCK > /dev/null
+            ssh-add - <<< "${{ secrets.SSH_DEPLOY_KEY }}"
+
+      - name: git commit and push
+        env:
+            SSH_AUTH_SOCK: /tmp/ssh_agent.sock
+        run: |
+          git config user.name "commonspeak2-delivery"
+          git config user.email ""
+          git add wordlists
+          git commit -m "$(date +%Y-%m-%dT%H:%M:%S%z)"
+          git push origin master
+
+# references
+# [1]: https://www.webfactory.de/blog/use-ssh-key-for-private-repositories-in-github-actions
