@@ -1,7 +1,7 @@
 name: generate and commit wordlists
 on:
   schedule:
-    - cron:  "30 20 * * *"  # every day at UTC 20:30p (PST 13:30p)
+    - cron:  "30 13 * * *"  # every day at UTC 13:30 (PST 06:30)
 
 jobs:
   wordlists:
@@ -25,7 +25,7 @@ jobs:
             --verbose \
             subdomains \
             --output wordlists/subdomains.txt \
-            --limit 15000
+            --limit 150000
 
       - name: sanity check
         run: head -n25 wordlists/subdomains.txt
