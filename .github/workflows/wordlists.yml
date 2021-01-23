@@ -1,7 +1,7 @@
 name: generate and commit wordlists
 on:
   schedule:
-    - cron:  "30 13 * * *"  # every day at UTC 13:30 (PST 06:30)
+    - cron:  "30 13 * * *"  # every day at 13:30 UTC (06:30 PT)
 
 jobs:
   wordlists:

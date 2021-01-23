@@ -1,8 +1,5 @@
 commonspeak2 (https://github.com/assetnote/commonspeak2) subdomain wordlist
-generated daily at UTC 13:30 (PST 06:30)
-
-PR to add the other wordlists if you want them. See
-`.github/workflows/wordlists.yml`
+generated daily at 13:30 UTC (06:30 PT)
 
 ## Usage
 To run this yourself using Github Actions, you need a GCP service account and
