@@ -1,3 +1,12 @@
+## DEPRECATED
+
+The author(s) of commonspeak2 maintain an official repo with more lists. Please
+use it instead: https://github.com/assetnote/wordlists
+
+This repo will no longer be updated.
+
+---
+
 commonspeak2 (https://github.com/assetnote/commonspeak2) subdomain wordlist
 generated daily at 13:30 UTC (06:30 PT)
 
